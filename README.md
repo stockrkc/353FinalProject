@@ -1,2 +1,2 @@
 # 353FinalProject
-Charlie, Allison, and John Final Project
+Charlie, Allison, and Jon Final Project
