@@ -172,9 +172,9 @@ void init_hardware(void)
   ps2_initialize();
   
   // Update the Space Shipt 60 times per second.
-  gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, false, true);
-  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, false, true);
-  gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, false, true);
+  gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1000000, false, true);
+  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
+  gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true);
 }
 
 //*****************************************************************************
@@ -182,40 +182,34 @@ void init_hardware(void)
 //*****************************************************************************
 void hw3_main(void)
 { 
-	bool game_over = false;
-
-	lcd_config_gpio();
-	lcd_config_screen();
-  lcd_clear_screen(LCD_COLOR_BLACK);	
 	
-	lcd_draw_image(
-                          120,                       // X Center Point
-                          map1WidthPixels,   // Image Horizontal Width
-                          160,                       // Y Center Point
-                          map1HeightPixels,  // Image Vertical Height
-                          map1Bitmaps,       // Image
-                          LCD_COLOR_BLUE,           // Foreground Color
-                          LCD_COLOR_BLACK          // Background Color
-                        );	
+//	lcd_draw_image(
+//													120,                       // X Center Point
+//                          map1WidthPixels,   // Image Horizontal Width
+//                          160,                       // Y Center Point
+//                          map1HeightPixels,  // Image Vertical Height
+//                          map1Bitmaps,       // Image
+//                          LCD_COLOR_BLUE,           // Foreground Color
+//                          LCD_COLOR_BLACK          // Background Color
+//                        );	
 
 		
-         while(!game_over)
+         while(1)
 				 {
-          if(ALERT_GHOST)
-          {
-            ALERT_GHOST = false;
-            
-            lcd_draw_image(
-                          GHOST_X_COORD,                       // X Center Point
-                          ghostpcWidthPixels,   // Image Horizontal Width
-                          GHOST_Y_COORD,                       // Y Center Point
-                          ghostpcHeightPixels,  // Image Vertical Height
-                          ghostpcBitmaps,       // Image
-                          LCD_COLOR_CYAN,           // Foreground Color
-                          LCD_COLOR_BLACK          // Background Color
-                        );
-              
-
+//          if(ALERT_GHOST)
+//          {
+//            ALERT_GHOST = false;
+//            
+//            lcd_draw_image(
+//                          GHOST_X_COORD,                       // X Center Point
+//                          ghostpcWidthPixels,   // Image Horizontal Width
+//                          GHOST_Y_COORD,                       // Y Center Point
+//                          ghostpcHeightPixels,  // Image Vertical Height
+//                          ghostpcBitmaps,       // Image
+//                          LCD_COLOR_CYAN,           // Foreground Color
+//                          LCD_COLOR_BLACK          // Background Color
+//                        );
+//              
           
           if(ALERT_PACMAN)
           {
@@ -235,4 +229,4 @@ void hw3_main(void)
           
 				}
 			}
-			}					
+		//	}					

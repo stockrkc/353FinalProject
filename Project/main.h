@@ -34,8 +34,10 @@
 #include "ps2.h"
 #include "launchpad_io.h"
 #include "images.h"
+
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
+
 #include "hw3.h"
 #include "hw3_staff.h"
 

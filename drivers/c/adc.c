@@ -23,6 +23,89 @@
 #include "adc.h"
 #include "driver_defines.h"
 
+static bool verify_base_addr(uint32_t baseAddr)
+{
+   switch( baseAddr )
+   {
+     case ADC0_BASE:
+     case ADC1_BASE:
+     {
+       return true;
+     }
+     default:
+     {
+       return false;
+     }
+   }
+}
+
+/****************************************************************************
+ * Return the GPIO IRQ Number
+ ****************************************************************************/
+IRQn_Type adc_get_irq_num(uint32_t base, uint8_t ss_num)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return ADC0SS0_IRQn + ss_num;
+     }
+     case ADC1_BASE:
+     {
+       return ADC1SS0_IRQn + ss_num;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
+
+
+/****************************************************************************
+ * Return the RCGC Mask
+ ****************************************************************************/
+uint32_t adc_get_rcgc_mask(uint32_t base)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return SYSCTL_RCGCADC_R0;
+     }
+     case ADC1_BASE:
+     {
+       return SYSCTL_RCGCADC_R1;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
+
+
+/****************************************************************************
+ * Return the RCGC Mask
+ ****************************************************************************/
+uint32_t adc_get_pr_mask(uint32_t base)
+{
+   switch(base)
+   {
+     case ADC0_BASE:
+     {
+       return SYSCTL_PRADC_R0;
+     }
+     case ADC1_BASE:
+     {
+       return SYSCTL_PRADC_R1;
+     }
+     default:
+     {
+       return 0;
+     }
+   }
+}
 /******************************************************************************
  * Initializes ADC to use Sample Sequencer #3, triggered by the processor,
  * no IRQs

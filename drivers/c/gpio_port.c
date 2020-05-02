@@ -135,7 +135,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port A
 			 rcgc_mask = SYSCTL_RCGCGPIO_R0;
 			 pr_mask = SYSCTL_PRGPIO_R0;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R0;
        break;
      }
      case GPIOB_BASE:
@@ -144,7 +143,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port B
 			 rcgc_mask = SYSCTL_RCGCGPIO_R1;
 			 pr_mask = SYSCTL_PRGPIO_R1;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R1;
        break;
      }
      case GPIOC_BASE:
@@ -153,7 +151,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port C
 			 rcgc_mask = SYSCTL_RCGCGPIO_R2;
 			 pr_mask = SYSCTL_PRGPIO_R2;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R2;
        break;
      }
      case GPIOD_BASE:
@@ -162,7 +159,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port D
 			 rcgc_mask = SYSCTL_RCGCGPIO_R3;
 			 pr_mask = SYSCTL_PRGPIO_R3;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R3;
        break;
      }
      case GPIOE_BASE:
@@ -171,7 +167,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port E
 			 rcgc_mask = SYSCTL_RCGCGPIO_R4;
 			 pr_mask = SYSCTL_PRGPIO_R4;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R4;
        break;
      }
      case GPIOF_BASE:
@@ -180,7 +175,6 @@ bool  gpio_enable_port(uint32_t baseAddr)
        // Set rcgc_mask and pr_mask for GPIO Port F
 			 rcgc_mask = SYSCTL_RCGCGPIO_R5;
 			 pr_mask = SYSCTL_PRGPIO_R5;
-			 SYSCTL->RCGCGPIO |= SYSCTL_RCGCGPIO_R5;
        break;
      }
      default:
@@ -229,13 +223,13 @@ bool  gpio_enable_port(uint32_t baseAddr)
 //*****************************************************************************
 bool  gpio_config_digital_enable(uint32_t baseAddr, uint8_t pins)
 {
+			GPIOA_Type  *gpioPort;
+
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_digital_enable: Not valid address");
 		return false;
 	} else {
-		GPIOA_Type  *gpioPort;
 		gpioPort = (GPIOA_Type *)baseAddr;
 		gpioPort->DEN |= pins;
 	}
@@ -255,14 +249,14 @@ bool  gpio_config_digital_enable(uint32_t baseAddr, uint8_t pins)
 //*****************************************************************************
 bool  gpio_config_enable_output(uint32_t baseAddr, uint8_t pins)
 {  
+			GPIOA_Type  *gpioPort;
+
   // ADD CODE
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_output: Not valid address");
 		return false;
 	} else {
-		GPIOA_Type  *gpioPort;
 		gpioPort = (GPIOA_Type *)baseAddr;
 		gpioPort->DIR |= pins;
 	}
@@ -283,14 +277,14 @@ bool  gpio_config_enable_output(uint32_t baseAddr, uint8_t pins)
 //*****************************************************************************
 bool  gpio_config_enable_input(uint32_t baseAddr, uint8_t pins)
 {
+			GPIOA_Type  *gpioPort;
+
   // ADD CODE
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_input: Not valid address");
 		return false;
 	} else {
-		GPIOA_Type  *gpioPort;
 		gpioPort = (GPIOA_Type *)baseAddr;
 		gpioPort->DIR &= ~pins;
 	}
@@ -310,14 +304,14 @@ bool  gpio_config_enable_input(uint32_t baseAddr, uint8_t pins)
 //*****************************************************************************
 bool  gpio_config_enable_pullup(uint32_t baseAddr, uint8_t pins)
 {
+			GPIOA_Type  *gpioPort;
+
   // ADD CODE
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_input: Not valid address");
 		return false;
 	} else {
-		GPIOA_Type  *gpioPort;
 		gpioPort = (GPIOA_Type *)baseAddr;
 		gpioPort->PUR |= pins;
 	}
@@ -339,7 +333,6 @@ bool  gpio_config_enable_pulldown(uint32_t baseAddr, uint8_t pins)
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_input: Not valid address");
 		return false;
 	} else {
 		GPIOA_Type  *gpioPort;
@@ -358,7 +351,6 @@ bool  gpio_config_analog_enable(uint32_t baseAddr, uint8_t pins)
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_input: Not valid address");
 		return false;
 	} else {
 		GPIOA_Type  *gpioPort;
@@ -376,7 +368,6 @@ bool  gpio_config_alternate_function(uint32_t baseAddr, uint8_t pins)
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_enable_input: Not valid address");
 		return false;
 	} else {
 		GPIOA_Type  *gpioPort;
@@ -397,7 +388,6 @@ bool  gpio_config_port_control(uint32_t baseAddr, uint32_t mask, uint32_t pctl)
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
 	if (!verify_base_addr(baseAddr)) {
-		printf("gpio_config_port_control: Not valid address");
 		return false;
 	}
   
@@ -424,7 +414,16 @@ bool  gpio_config_open_drain(uint32_t gpioBase, uint8_t pins)
   // ADD CODE
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above	
-	
+	if( verify_base_addr(gpioBase) == false)
+    {
+      return false;
+    }
+    
+  // Type Cast the base address to a GPIOA_Type pointer
+  gpioPort = (GPIOA_Type *)gpioBase;
+
+  // Configure pins as open-drain
+  gpioPort->ODR |= pins;
   return true;
 }
 
@@ -450,6 +449,24 @@ bool  gpio_config_falling_edge_irq(uint32_t gpioBase, uint8_t pins)
   // ADD CODE
   // Verify that the base address is a valid GPIO base address
   // using the verify_base_addr function provided above
+    if( verify_base_addr(gpioBase) == false)
+    {
+      return false;
+    }
     
+  // Type Cast the base address to a GPIOA_Type pointer
+  gpioPort = (GPIOA_Type *)gpioBase;
+
+  // Disable any interrupts that we will modify
+  gpioPort->IM &= ~pins;
+		
+	// Clear any outstanding interrupts
+	gpioPort->ICR |= pins;
+		
+	// Set the interrupts as falling edge interrupts
+	gpioPort->IEV &= ~pins;
+	
+	// Re-enable the interrupts in the peripheral
+	gpioPort->IM |= pins;
   return true;
 }

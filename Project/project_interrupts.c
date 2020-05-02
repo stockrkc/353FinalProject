@@ -26,7 +26,7 @@ static volatile uint16_t PS2_X_DATA = 0;
 static volatile uint16_t PS2_Y_DATA = 0;
 static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 static volatile uint16_t move_count = 25;
-static volatile PS2_DIR_t ship_dir = PS2_DIR_UP;
+static volatile PS2_DIR_t ghost_dir = PS2_DIR_UP;
 
 //*****************************************************************************
 // Returns the most current direction that was pressed.
@@ -89,16 +89,16 @@ void TIMER3A_Handler(void)
 			//decrement the move count so the next time it is called the ship will move one more
 			move_count = move_count - 1;
 			//since the move count is not 0, checks to make sure the ship isn't on the edge
-			if (contact_edge(ship_dir, GHOST_X_COORD, GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels)) {
+			if (contact_edge(ghost_dir, GHOST_X_COORD, GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels)) {
 				//if the ship is touching the edge, get new direction and move count
-				ship_dir = get_new_direction(ship_dir);
+				ghost_dir = get_new_direction(ghost_dir);
 				move_count = get_new_move_count();
 			} else {
-					move_image(ship_dir, &GHOST_X_COORD, &GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels);
+					move_image(ghost_dir, &GHOST_X_COORD, &GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels);
 			}
 		//if move count is 0, get new direction and move count
 		}	else {
-				ship_dir = get_new_direction(ship_dir);
+				ghost_dir = get_new_direction(ghost_dir);
 				move_count = get_new_move_count();
 		}
 		
@@ -136,9 +136,3 @@ void ADC0SS2_Handler(void)
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
 }
-
-
-
-
-
-
