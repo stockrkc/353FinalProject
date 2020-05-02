@@ -59,7 +59,25 @@ main(void)
                           LCD_COLOR_BLUE,           // Foreground Color
                           LCD_COLOR_BLACK          // Background Color
                         );	
-	
+		lcd_draw_image(
+                          120,                       // X Center Point
+                          pacmanWidthPixels,   // Image Horizontal Width
+                          160,                       // Y Center Point
+                          pacmanHeightPixels,  // Image Vertical Height
+                          pacmanBitmaps,       // Image
+                          LCD_COLOR_YELLOW,           // Foreground Color
+                          LCD_COLOR_BLACK          // Background Color
+                        );	
+												
+			lcd_draw_image(
+                          80,                       // X Center Point
+                          ghostpcWidthPixels,   // Image Horizontal Width
+                          160,                       // Y Center Point
+                          ghostpcHeightPixels,  // Image Vertical Height
+                          ghostpcBitmaps,       // Image
+                          LCD_COLOR_CYAN,           // Foreground Color
+                          LCD_COLOR_BLACK          // Background Color
+                        );											
 		while(1) {};
 	
 		};

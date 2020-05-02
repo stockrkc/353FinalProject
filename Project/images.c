@@ -282,3 +282,69 @@ const uint8_t map1Bitmaps[] =
 const uint8_t map1WidthPixels = 209;
 const uint16_t map1HeightPixels = 270;
 
+// 
+//  Image data for pacman_guy
+// 
+
+// 
+//  Image data for pacman
+// 
+
+const uint8_t pacmanBitmaps[] =
+{
+	0x03, 0xC0, //       ####      
+	0x0F, 0xF8, //     #########   
+	0x1F, 0xFC, //    ###########  
+	0x3F, 0xFE, //   ############# 
+	0x7F, 0xFF, //  ###############
+	0xFF, 0xFE, // ############### 
+	0xFF, 0xF0, // ############    
+	0xFF, 0xC0, // ##########      
+	0xFF, 0x80, // #########       
+	0xFF, 0xE0, // ###########     
+	0xFF, 0xFC, // ##############  
+	0xFF, 0xFF, // ################
+	0x7F, 0xFF, //  ###############
+	0x3F, 0xFE, //   ############# 
+	0x1F, 0xFC, //    ###########  
+	0x0F, 0xF8, //     #########   
+	0x03, 0xC0, //       ####      
+};
+
+// Bitmap sizes for pacman
+const uint8_t pacmanWidthPixels = 16;
+const uint8_t pacmanHeightPixels = 17;
+
+
+// 
+//  Image data for ghostpc
+// 
+
+const uint8_t ghostpcBitmaps[] =
+{
+	0x07, 0x80, //      ####     
+	0x1F, 0xE0, //    ########   
+	0x3F, 0xF0, //   ##########  
+	0x7F, 0xF0, //  ###########  
+	0x7F, 0xF8, //  ############ 
+	0xFF, 0xFC, // ##############
+	0xE7, 0x9C, // ###  ####  ###
+	0xCB, 0x2C, // ##  # ##  # ##
+	0xDB, 0x6C, // ## ## ## ## ##
+	0xE7, 0x9C, // ###  ####  ###
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0xFF, 0xFC, // ##############
+	0x6C, 0xD8, //  ## ##  ## ## 
+	0x6C, 0xD8, //  ## ##  ## ## 
+};
+
+// Bitmap sizes for ghostpc
+const uint8_t ghostpcWidthPixels = 14;
+const uint8_t ghostpcHeightPixels = 19;
+
+
