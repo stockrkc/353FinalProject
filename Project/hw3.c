@@ -196,37 +196,37 @@ void hw3_main(void)
 		
          while(1)
 				 {
-//          if(ALERT_GHOST)
-//          {
-//            ALERT_GHOST = false;
-//            
-//            lcd_draw_image(
-//                          GHOST_X_COORD,                       // X Center Point
-//                          ghostpcWidthPixels,   // Image Horizontal Width
-//                          GHOST_Y_COORD,                       // Y Center Point
-//                          ghostpcHeightPixels,  // Image Vertical Height
-//                          ghostpcBitmaps,       // Image
-//                          LCD_COLOR_CYAN,           // Foreground Color
-//                          LCD_COLOR_BLACK          // Background Color
-//                        );
-//              
-          
-          if(ALERT_PACMAN)
+          if(ALERT_GHOST)
           {
-            ALERT_PACMAN = false;
+            ALERT_GHOST = false;
             
             lcd_draw_image(
-                          PACMAN_X_COORD,          // X Center Point
-                          pacmanWidthPixels,       // Image Horizontal Width
-                          PACMAN_Y_COORD,          // Y Center Point
-                          pacmanHeightPixels,      // Image Vertical Height
-                          pacmanBitmaps,           // Image
-                          LCD_COLOR_YELLOW,            // Foreground Color
-                          LCD_COLOR_BLACK           // Background Color
+                          GHOST_X_COORD,                       // X Center Point
+                          ghostpcWidthPixels,   // Image Horizontal Width
+                          GHOST_Y_COORD,                       // Y Center Point
+                          ghostpcHeightPixels,  // Image Vertical Height
+                          ghostpcBitmaps,       // Image
+                          LCD_COLOR_CYAN,           // Foreground Color
+                          LCD_COLOR_BLACK          // Background Color
                         );
-         
-          }
+//              
+          
+//          if(ALERT_PACMAN)
+//          {
+//            ALERT_PACMAN = false;
+//            
+//            lcd_draw_image(
+//                          PACMAN_X_COORD,          // X Center Point
+//                          pacmanWidthPixels,       // Image Horizontal Width
+//                          PACMAN_Y_COORD,          // Y Center Point
+//                          pacmanHeightPixels,      // Image Vertical Height
+//                          pacmanBitmaps,           // Image
+//                          LCD_COLOR_YELLOW,            // Foreground Color
+//                          LCD_COLOR_BLACK           // Background Color
+//                        );
+//         
+//          }
           
 				}
 			}
-		//	}					
+			}					

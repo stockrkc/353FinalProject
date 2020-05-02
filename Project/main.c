@@ -47,7 +47,7 @@ void EnableInterrupts(void)
 //functions*******************************8
 //start screen functions
 void startScreen(void) {
-	lcd_draw_image(120,pclogoWidthPixels, 100, pclogoHeightPixels, pclogoBitmaps, LCD_COLOR_YELLOW, LCD_COLOR_BLACK);
+	lcd_draw_image(120, pclogoWidthPixels, 100, pclogoHeightPixels, pclogoBitmaps, LCD_COLOR_YELLOW, LCD_COLOR_BLACK);
 
 }
 

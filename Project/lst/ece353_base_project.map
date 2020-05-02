@@ -25,8 +25,8 @@ Section Cross References
     hw3.o(.text) refers to lcd.o(.text) for lcd_config_gpio
     hw3.o(.text) refers to ps2.o(.text) for ps2_initialize
     hw3.o(.text) refers to timers.o(.text) for gp_timer_config_32
-    hw3.o(.text) refers to hw3.o(.data) for ALERT_PACMAN
-    hw3.o(.text) refers to images.o(.constdata) for pacmanBitmaps
+    hw3.o(.text) refers to hw3.o(.data) for ALERT_GHOST
+    hw3.o(.text) refers to images.o(.constdata) for ghostpcBitmaps
     hw3_staff.o(.text) refers to hw3_staff.o(.data) for lfsr
     hw3_staff.o(.text) refers to hw3_staff.o(.constdata) for MOV_DIR
     pc_buffer.o(.text) refers to malloc.o(i.malloc) for malloc
@@ -200,30 +200,30 @@ Image Symbol Table
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
     RESET                                    0x00000000   Section      620  startup_tm4c123.o(RESET)
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llshl.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llushr.o ABSOLUTE
     ../clib/microlib/longlong.c              0x00000000   Number         0  llsshr.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
-    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloc.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocr.o ABSOLUTE
     ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  mallocra.o ABSOLUTE
+    ../clib/microlib/malloc/malloc.c         0x00000000   Number         0  malloca.o ABSOLUTE
     ../clib/microlib/malloc/mvars.c          0x00000000   Number         0  mvars.o ABSOLUTE
     ../clib/microlib/stdio/streams.c         0x00000000   Number         0  stdout.o ABSOLUTE
-    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpyb.o ABSOLUTE
+    ../clib/microlib/string/memcpy.c         0x00000000   Number         0  memcpya.o ABSOLUTE
     ../clib/microlib/stubs.s                 0x00000000   Number         0  iusefp.o ABSOLUTE
     ../fplib/microlib/fpadd.c                0x00000000   Number         0  dadd.o ABSOLUTE
     ../fplib/microlib/fpepilogue.c           0x00000000   Number         0  depilogue.o ABSOLUTE
@@ -319,8 +319,8 @@ Image Symbol Table
     .text                                    0x00001ce4   Section       48  cdrcmple.o(.text)
     .text                                    0x00001d14   Section        0  llshl.o(.text)
     .text                                    0x00001d32   Section        0  llsshr.o(.text)
-    .text                                    0x00001d56   Section        0  iusefp.o(.text)
     .text                                    0x00001d56   Section        0  depilogue.o(.text)
+    .text                                    0x00001d56   Section        0  iusefp.o(.text)
     .text                                    0x00001e10   Section       36  init.o(.text)
     .text                                    0x00001e34   Section        0  llushr.o(.text)
     i.__scatterload_copy                     0x00001e54   Section       14  handlers.o(i.__scatterload_copy)
@@ -637,15 +637,15 @@ Memory Map of the image
     0x000002dc   0x000002dc   0x000001a8   Code   RO          145    .text               project_interrupts.o
     0x00000484   0x00000484   0x00000364   Code   RO          171    .text               hw3.o
     0x000007e8   0x000007e8   0x0000007c   Code   RO          201    .text               hw3_staff.o
-    0x00000864   0x00000864   0x00000124   Code   RO          228    .text               adc.o
-    0x00000988   0x00000988   0x000002cc   Code   RO          252    .text               gpio_port.o
-    0x00000c54   0x00000c54   0x00000072   Code   RO          300    .text               pc_buffer.o
+    0x00000864   0x00000864   0x00000124   Code   RO          240    .text               adc.o
+    0x00000988   0x00000988   0x000002cc   Code   RO          264    .text               gpio_port.o
+    0x00000c54   0x00000c54   0x00000072   Code   RO          312    .text               pc_buffer.o
     0x00000cc6   0x00000cc6   0x00000002   PAD
-    0x00000cc8   0x00000cc8   0x00000248   Code   RO          348    .text               timers.o
-    0x00000f10   0x00000f10   0x0000020c   Code   RO          376    .text               uart.o
-    0x0000111c   0x0000111c   0x000004bc   Code   RO          511    .text               lcd.o
-    0x000015d8   0x000015d8   0x0000003c   Code   RO          541    .text               ps2.o
-    0x00001614   0x00001614   0x00000108   Code   RO          565    .text               serial_debug.o
+    0x00000cc8   0x00000cc8   0x00000248   Code   RO          360    .text               timers.o
+    0x00000f10   0x00000f10   0x0000020c   Code   RO          388    .text               uart.o
+    0x0000111c   0x0000111c   0x000004bc   Code   RO          523    .text               lcd.o
+    0x000015d8   0x000015d8   0x0000003c   Code   RO          553    .text               ps2.o
+    0x00001614   0x00001614   0x00000108   Code   RO          577    .text               serial_debug.o
     0x0000171c   0x0000171c   0x000000fc   Code   RO          641  * .text               startup_tm4c123.o
     0x00001818   0x00001818   0x00000250   Code   RO          648    .text               system_tm4c123.o
     0x00001a68   0x00001a68   0x0000014e   Code   RO          707    .text               mf_w.l(dadd.o)
@@ -663,10 +663,10 @@ Memory Map of the image
     0x00001e62   0x00001e62   0x00000002   Code   RO          751    i.__scatterload_null  mc_w.l(handlers.o)
     0x00001e64   0x00001e64   0x0000000e   Code   RO          752    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x00001e72   0x00001e72   0x00000002   PAD
-    0x00001e74   0x00001e74   0x0000003c   Code   RO          529    i.lcd_write_data_u16  lcd.o
+    0x00001e74   0x00001e74   0x0000003c   Code   RO          541    i.lcd_write_data_u16  lcd.o
     0x00001eb0   0x00001eb0   0x0000006c   Code   RO          680    i.malloc            mc_w.l(malloc.o)
     0x00001f1c   0x00001f1c   0x00000014   Data   RO          202    .constdata          hw3_staff.o
-    0x00001f30   0x00001f30   0x00002506   Data   RO          626    .constdata          images.o
+    0x00001f30   0x00001f30   0x00002506   Data   RO          225    .constdata          images.o
     0x00004436   0x00004436   0x00000002   PAD
     0x00004438   0x00004438   0x00000020   Data   RO          748    Region$$Table       anon$$obj.o
 
@@ -679,7 +679,7 @@ Memory Map of the image
     0x20000009   0x00004461   0x00000001   PAD
     0x2000000a   0x00004462   0x0000003a   Data   RW          172    .data               hw3.o
     0x20000044   0x0000449c   0x00000002   Data   RW          203    .data               hw3_staff.o
-    0x20000046   0x0000449e   0x00000002   Data   RW          567    .data               serial_debug.o
+    0x20000046   0x0000449e   0x00000002   Data   RW          579    .data               serial_debug.o
     0x20000048   0x000044a0   0x00000004   Data   RW          649    .data               system_tm4c123.o
     0x2000004c   0x000044a4   0x00000004   Data   RW          678    .data               mc_w.l(stdout.o)
     0x20000050   0x000044a8   0x00000004   Data   RW          739    .data               mc_w.l(mvars.o)
@@ -690,7 +690,7 @@ Memory Map of the image
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000058        -       0x0000001c   Zero   RW          566    .bss                serial_debug.o
+    0x20000058        -       0x0000001c   Zero   RW          578    .bss                serial_debug.o
     0x20000074   0x000044b0   0x00000004   PAD
     0x20000078        -       0x00000000   Zero   RW          639    HEAP                startup_tm4c123.o
     0x20000078        -       0x00001000   Zero   RW          638    STACK               startup_tm4c123.o
