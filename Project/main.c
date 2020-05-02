@@ -46,20 +46,20 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-	ps2_initialize();;
-	lcd_config_gpio();
+
+  lcd_config_gpio();
 	lcd_config_screen();
-	lcd_clear_screen(LCD_COLOR_BLACK);
-	
+  lcd_clear_screen(LCD_COLOR_BLACK);	
 	lcd_draw_image(
-                          50,                       // X Center Point
-                          pacmanlogoWidth,   // Image Horizontal Width
-                          40,                       // Y Center Point
-                          pacmanlogoHeight,  // Image Vertical Height
-                          pacmanlogoBitmaps,       // Image
+                          120,                       // X Center Point
+                          map1WidthPixels,   // Image Horizontal Width
+                          160,                       // Y Center Point
+                          map1HeightPixels,  // Image Vertical Height
+                          map1Bitmaps,       // Image
                           LCD_COLOR_BLUE,           // Foreground Color
                           LCD_COLOR_BLACK          // Background Color
                         );	
+	
 		while(1) {};
 	
 		};

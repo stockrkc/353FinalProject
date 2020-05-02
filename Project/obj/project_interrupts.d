@@ -24,4 +24,5 @@
 .\obj\project_interrupts.o: images.h
 .\obj\project_interrupts.o: project_interrupts.h
 .\obj\project_interrupts.o: main.h
+.\obj\project_interrupts.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\obj\project_interrupts.o: project_hardware_init.h

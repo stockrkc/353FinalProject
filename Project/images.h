@@ -5,9 +5,9 @@
 
 
 // Bitmap info for pacmanlogo
-extern const uint8_t pacmanlogoBitmaps[];
-extern const uint8_t pacmanlogoWidth;
-extern const uint8_t pacmanlogoHeight;
+extern const uint8_t map1Bitmaps[];
+extern const uint8_t map1WidthPixels;
+extern const uint16_t map1HeightPixels;
 
 
 #endif

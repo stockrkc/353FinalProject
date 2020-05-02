@@ -412,16 +412,6 @@
               <FileType>5</FileType>
               <FilePath>.\project_interrupts.h</FilePath>
             </File>
-            <File>
-              <FileName>images.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\images.c</FilePath>
-            </File>
-            <File>
-              <FileName>images.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\images.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -511,6 +501,16 @@
               <FileName>ws2812b.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\peripherals\c\ws2812b.s</FilePath>
+            </File>
+            <File>
+              <FileName>images.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>Z:\Documents\GitHub\353FinalProject\Project\images.c</FilePath>
+            </File>
+            <File>
+              <FileName>images.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>Z:\Documents\GitHub\353FinalProject\Project\images.h</FilePath>
             </File>
           </Files>
         </Group>
