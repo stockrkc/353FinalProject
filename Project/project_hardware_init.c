@@ -22,5 +22,13 @@
 
 #include "main.h"
 
-
+void project_hardware_init(void){
+initialize_adc(ADC0_BASE);
+pc_buffer_init();
+ps2_initialize();;
+lcd_config_gpio();
+lcd_config_screen();
+lcd_clear_screen(LCD_COLOR_BLACK);
+init_serial_debug(true, true);
+}
 
