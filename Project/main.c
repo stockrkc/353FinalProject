@@ -22,7 +22,6 @@
 
 #include "main.h"
 
-
 //*****************************************************************************
 //*****************************************************************************
 void DisableInterrupts(void)
@@ -47,6 +46,20 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-project_hardware_init();
-    while(1){};
-}
+	ps2_initialize();;
+	lcd_config_gpio();
+	lcd_config_screen();
+	lcd_clear_screen(LCD_COLOR_BLACK);
+	
+	lcd_draw_image(
+                          50,                       // X Center Point
+                          pacmanlogoWidth,   // Image Horizontal Width
+                          40,                       // Y Center Point
+                          pacmanlogoHeight,  // Image Vertical Height
+                          pacmanlogoBitmaps,       // Image
+                          LCD_COLOR_BLUE,           // Foreground Color
+                          LCD_COLOR_BLACK          // Background Color
+                        );	
+		while(1) {};
+	
+		};

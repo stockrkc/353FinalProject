@@ -33,8 +33,7 @@
 #include "timers.h"
 #include "ps2.h"
 #include "launchpad_io.h"
-
+#include "images.h"
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
-#include "images.h"
 #endif
