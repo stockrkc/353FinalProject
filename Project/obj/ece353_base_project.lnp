@@ -2,6 +2,8 @@
 ".\obj\main.o"
 ".\obj\project_hardware_init.o"
 ".\obj\project_interrupts.o"
+".\obj\hw3.o"
+".\obj\hw3_staff.o"
 ".\obj\adc.o"
 ".\obj\gpio_port.o"
 ".\obj\i2c.o"

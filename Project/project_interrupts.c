@@ -65,15 +65,15 @@ PS2_DIR_t ps2_get_direction(void)
 void TIMER2A_Handler(void)
 {		
 	//makes sure the joystick isn't in the center (not moving the invader)
-//	if(PS2_DIR != PS2_DIR_CENTER) {
+	if(PS2_DIR != PS2_DIR_CENTER) {
 		//checks if contacted edge
-//		bool contact = contact_edge(PS2_DIR, INVADER_X_COORD, INVADER_Y_COORD,  invaderHeightPixels,  invaderWidthPixels);
-//		if(!contact){
-//			move_image(PS2_DIR, &INVADER_X_COORD, &INVADER_Y_COORD, invaderHeightPixels,  invaderWidthPixels); 
-//		}
-//	}
-//	
-//	ALERT_INVADER = true;
+		bool contact = contact_edge(PS2_DIR, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanHeightPixels,  pacmanWidthPixels);
+		if(!contact){
+			move_image(PS2_DIR, &PACMAN_X_COORD, &PACMAN_Y_COORD, pacmanHeightPixels,  pacmanWidthPixels); 
+		}
+	}
+	
+	ALERT_PACMAN = true;
 
     // Clear the interrupt
 	TIMER2->ICR |= TIMER_ICR_TATOCINT;
@@ -85,24 +85,24 @@ void TIMER2A_Handler(void)
 void TIMER3A_Handler(void)
 {	
 		//if the move count is greater than 0 the ship has pixels left to move
-//		if(move_count > 0){
-//			//decrement the move count so the next time it is called the ship will move one more
-//			move_count = move_count - 1;
-//			//since the move count is not 0, checks to make sure the ship isn't on the edge
-//			if (contact_edge(ship_dir, SHIP_X_COORD, SHIP_Y_COORD, space_shipHeightPixels, space_shipWidthPixels)) {
-//				//if the ship is touching the edge, get new direction and move count
-//				ship_dir = get_new_direction(ship_dir);
-//				move_count = get_new_move_count();
-//			} else {
-//					move_image(ship_dir, &SHIP_X_COORD, &SHIP_Y_COORD, space_shipHeightPixels, space_shipWidthPixels);
-//			}
-//		//if move count is 0, get new direction and move count
-//		}	else {
-//				ship_dir = get_new_direction(ship_dir);
-//				move_count = get_new_move_count();
-//		}
-//		
-//		ALERT_SPACE_SHIP = true;
+		if(move_count > 0){
+			//decrement the move count so the next time it is called the ship will move one more
+			move_count = move_count - 1;
+			//since the move count is not 0, checks to make sure the ship isn't on the edge
+			if (contact_edge(ship_dir, GHOST_X_COORD, GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels)) {
+				//if the ship is touching the edge, get new direction and move count
+				ship_dir = get_new_direction(ship_dir);
+				move_count = get_new_move_count();
+			} else {
+					move_image(ship_dir, &GHOST_X_COORD, &GHOST_Y_COORD, ghostpcHeightPixels, ghostpcWidthPixels);
+			}
+		//if move count is 0, get new direction and move count
+		}	else {
+				ship_dir = get_new_direction(ship_dir);
+				move_count = get_new_move_count();
+		}
+		
+		ALERT_GHOST = true;
 		
 		// Clear the interrupt
 		TIMER3->ICR |= TIMER_ICR_TATOCINT;

@@ -46,38 +46,11 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-
-  lcd_config_gpio();
+		lcd_config_gpio();
 	lcd_config_screen();
   lcd_clear_screen(LCD_COLOR_BLACK);	
-	lcd_draw_image(
-                          120,                       // X Center Point
-                          map1WidthPixels,   // Image Horizontal Width
-                          160,                       // Y Center Point
-                          map1HeightPixels,  // Image Vertical Height
-                          map1Bitmaps,       // Image
-                          LCD_COLOR_BLUE,           // Foreground Color
-                          LCD_COLOR_BLACK          // Background Color
-                        );	
-		lcd_draw_image(
-                          120,                       // X Center Point
-                          pacmanWidthPixels,   // Image Horizontal Width
-                          160,                       // Y Center Point
-                          pacmanHeightPixels,  // Image Vertical Height
-                          pacmanBitmaps,       // Image
-                          LCD_COLOR_YELLOW,           // Foreground Color
-                          LCD_COLOR_BLACK          // Background Color
-                        );	
-												
-			lcd_draw_image(
-                          80,                       // X Center Point
-                          ghostpcWidthPixels,   // Image Horizontal Width
-                          160,                       // Y Center Point
-                          ghostpcHeightPixels,  // Image Vertical Height
-                          ghostpcBitmaps,       // Image
-                          LCD_COLOR_CYAN,           // Foreground Color
-                          LCD_COLOR_BLACK          // Background Color
-                        );											
+		lcd_draw_image(120,pclogoWidthPixels, 100, pclogoHeightPixels, pclogoBitmaps, LCD_COLOR_YELLOW, LCD_COLOR_BLACK);
+	
 		while(1) {};
 	
 		};

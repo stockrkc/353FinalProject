@@ -36,16 +36,8 @@
 #include "images.h"
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
-
-typedef enum{
-  PS2_DIR_UP,
-  PS2_DIR_DOWN,
-  PS2_DIR_LEFT,
-  PS2_DIR_RIGHT,
-  PS2_DIR_CENTER,
-  PS2_DIR_INIT,
-} PS2_DIR_t;
-
+#include "hw3.h"
+#include "hw3_staff.h"
 
 
 #endif

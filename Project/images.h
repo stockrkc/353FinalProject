@@ -19,5 +19,12 @@ extern const uint8_t ghostpcBitmaps[];
 extern const uint8_t ghostpcWidthPixels;
 extern const uint8_t ghostpcHeightPixels;
 
+// Bitmap info for pclogo
+extern const uint8_t pclogoBitmaps[];
+extern const uint8_t pclogoWidthPixels;
+extern const uint8_t pclogoHeightPixels;
+
+
+
 
 #endif
