@@ -47,6 +47,6 @@ void EnableInterrupts(void)
 int 
 main(void)
 {
-
+project_hardware_init();
     while(1){};
 }
