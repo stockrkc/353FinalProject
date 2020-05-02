@@ -2,7 +2,6 @@
 ".\obj\main.o"
 ".\obj\project_hardware_init.o"
 ".\obj\project_interrupts.o"
-".\obj\images.o"
 ".\obj\adc.o"
 ".\obj\gpio_port.o"
 ".\obj\i2c.o"
@@ -19,6 +18,7 @@
 ".\obj\serial_debug.o"
 ".\obj\spi_select.o"
 ".\obj\ws2812b.o"
+".\obj\images.o"
 ".\obj\startup_tm4c123.o"
 ".\obj\system_tm4c123.o"
 --library_type=microlib --ro-base 0x00000000 --entry 0x00000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
