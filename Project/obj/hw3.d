@@ -21,3 +21,17 @@
 .\obj\hw3.o: ..\peripherals\include\lcd.h
 .\obj\hw3.o: ..\drivers\include\timers.h
 .\obj\hw3.o: images.h
+.\obj\hw3.o: main.h
+.\obj\hw3.o: ..\peripherals\include\lcd_images.h
+.\obj\hw3.o: ..\peripherals\include\launchpad_io.h
+.\obj\hw3.o: ..\peripherals\include\ft6x06.h
+.\obj\hw3.o: ..\drivers\include\i2c.h
+.\obj\hw3.o: ..\peripherals\include\ioexpander.h
+.\obj\hw3.o: ..\peripherals\include\serial_debug.h
+.\obj\hw3.o: ..\drivers\include\pc_buffer.h
+.\obj\hw3.o: ..\drivers\include\uart.h
+.\obj\hw3.o: ..\peripherals\include\eeprom.h
+.\obj\hw3.o: project_interrupts.h
+.\obj\hw3.o: main.h
+.\obj\hw3.o: project_hardware_init.h
+.\obj\hw3.o: hw3_staff.h

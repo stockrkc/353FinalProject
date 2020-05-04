@@ -22,9 +22,16 @@
 .\obj\main.o: ..\drivers\include\adc.h
 .\obj\main.o: ..\peripherals\include\launchpad_io.h
 .\obj\main.o: images.h
+.\obj\main.o: ..\peripherals\include\ft6x06.h
+.\obj\main.o: ..\drivers\include\i2c.h
+.\obj\main.o: ..\peripherals\include\ioexpander.h
+.\obj\main.o: ..\peripherals\include\serial_debug.h
+.\obj\main.o: ..\drivers\include\pc_buffer.h
+.\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\obj\main.o: ..\drivers\include\uart.h
+.\obj\main.o: ..\peripherals\include\eeprom.h
 .\obj\main.o: project_interrupts.h
 .\obj\main.o: main.h
-.\obj\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\obj\main.o: project_hardware_init.h
 .\obj\main.o: hw3.h
 .\obj\main.o: hw3_staff.h

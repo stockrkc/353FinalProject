@@ -284,22 +284,45 @@ bool uart_init(uint32_t uart_base, bool enable_rx_irq, bool enable_tx_irq)
     pr_mask = uart_get_pr_mask(uart_base);
     
     // ADD CODE
-		SYSCTL->RCGCUART = SYSCTL_RCGCUART_R0;
-		while (!SYSCTL->PRUART) {
-		}
-		//disable the UART
-		uart->CTL &= ~UART_CTL_UARTEN;
+    //Starting the UART Timer
+		SYSCTL -> RCGCUART |= SYSCTL_RCGCUART_R0;
+		//Wait for the peripheral to be ready
+		while( !(SYSCTL -> PRGPIO & SYSCTL_PRUART_R0)){};
+		//Disable the UART
+		uart -> CTL &= ~UART_CTL_UARTEN;
 		
-		// set baud rate
-    uart->IBRD = 27;
-		uart->FBRD = 8;
+		//Setting the Buad Rate 
+		uart -> IBRD = 27;
+		uart -> FBRD = 8;
+			
+		//Configure UART for 8N1 and enabling hardware FIFOs
+		uart -> LCRH |= UART_LCRH_WLEN_8;
+		uart -> LCRH |= UART_LCRH_FEN;
+			
+		 if( enable_rx_irq)
+		 {
+			 // <ADD CODE> Turn on the UART Interrupts for Rx, and Rx Timeout
+			 uart -> IM |= UART_IM_RXIM | UART_IM_RTIM;
+		 }
+
+		 if( enable_tx_irq)
+		 {
+				uart -> IM |= UART_IM_TXIM;
+		 }
+
+		 if ( enable_rx_irq || enable_tx_irq )
+		 {
+			 // <ADD CODE> Set the priority to 0.  Be sure to call uart_get_irq_num(uart_base) to   // get the correct IRQn_Type
+				NVIC_SetPriority( uart_get_irq_num(uart_base), 0);
+			 // <ADD CODE> Enable the NVIC.  Be sure to call uart_get_irq_num(uart_base) to get
+			 // the correct IRQn_Type
+				NVIC_EnableIRQ(uart_get_irq_num(uart_base));
+		 }
+					
+			
+		// Re-Enabling the UART to transmit and recieve data	
+		uart -> CTL |= UART_CTL_UARTEN | UART_CTL_RXE | UART_CTL_TXE;
 		
-		// configure UART to 8N1 and disable FIFOs
-		uart->LCRH |= UART_LCRH_WLEN_8;
-		uart->LCRH &= ~UART_LCRH_FEN;
-		
-		// re-enable UART so it transmits/receives
-		uart->CTL = (UART_CTL_RXE | UART_CTL_TXE | UART_CTL_UARTEN);
 		
     return true;
 

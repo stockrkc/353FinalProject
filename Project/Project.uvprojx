@@ -413,16 +413,6 @@
               <FilePath>.\project_interrupts.h</FilePath>
             </File>
             <File>
-              <FileName>hw3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\hw3.c</FilePath>
-            </File>
-            <File>
-              <FileName>hw3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\hw3.h</FilePath>
-            </File>
-            <File>
               <FileName>hw3_staff.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\hw3_staff.c</FilePath>
@@ -441,6 +431,16 @@
               <FileName>hw3_staff.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\hw3_staff.h</FilePath>
+            </File>
+            <File>
+              <FileName>hw3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hw3.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\hw3.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -531,6 +531,16 @@
               <FileName>ws2812b.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\peripherals\c\ws2812b.s</FilePath>
+            </File>
+            <File>
+              <FileName>ioexpander.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\peripherals\c\ioexpander.c</FilePath>
+            </File>
+            <File>
+              <FileName>io_expander.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\peripherals\include\io_expander.h</FilePath>
             </File>
           </Files>
         </Group>

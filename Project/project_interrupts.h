@@ -34,4 +34,6 @@
 #include "lcd.h"
 #include "timers.h"
 
+//volatile bool Alert;
+
 #endif

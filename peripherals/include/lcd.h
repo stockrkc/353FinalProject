@@ -246,6 +246,15 @@ void lcd_draw_image(
   uint16_t fColor,                  // foreground color
   uint16_t bColor                   // background color
 );
+	
+	void lcd_draw_rectangle_centered
+(
+  uint16_t x_center, 
+  uint16_t x_len, 
+  uint16_t y_center, 
+  uint16_t y_len,  
+  uint16_t fg_color
+);
 
 /*******************************************************************************
 * Function Name: lcd_config_gpio

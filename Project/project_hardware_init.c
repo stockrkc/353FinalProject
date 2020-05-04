@@ -21,15 +21,30 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
-#include "project_hardware_init.h"
 
-void project_hardware_init(void){
+void project_hardware_init(){
+
+
+	DisableInterrupts();
 	
-initialize_adc(ADC0_BASE);
-ps2_initialize();
-lcd_config_gpio();
-lcd_config_screen();
-lcd_clear_screen(LCD_COLOR_BLACK);
+		//configures timers
+	gp_timer_config_32(TIMER0_BASE, TIMER_TAMR_TAMR_1_SHOT, 5000000, false, false);
+	gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1000000, false, true);
+  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
+  gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
+	gp_timer_config_32(TIMER1_BASE, TIMER_TAMR_TAMR_PERIOD, 50000000, false, true);
+	
+	ps2_initialize();
+	lp_io_init();
+	io_expander_init();
+	//io_expander_loop_obligation();
+	ft6x06_init();
+	eeprom_init();
+	lcd_config_screen();
+	lcd_clear_screen(LCD_COLOR_BLACK);
+	init_serial_debug(true, true);
+	EnableInterrupts();
+	
 }
 
 

@@ -41,10 +41,4 @@ uint16_t get_new_move_count(void)
     return MOVE_AMOUNT[generate_random_number()%8];
 }
 
-
-extern void initialize_serial_debug(void);
-extern void put_string(char *data);
-
-//*****************************************************************************
-// Validates HW3 
-//*****************************************************************************
+//*******************************************************************

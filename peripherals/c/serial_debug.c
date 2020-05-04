@@ -30,9 +30,31 @@ PC_Buffer UART0_Rx_Buffer;
 bool init_serial_debug(bool enable_rx_irq, bool enable_tx_irq)
 {
   
-  // ADD CODE  
   // Initialize the GPIO pins used for the serial debug interface
-  
+	gpio_enable_port(SERIAL_DBG_GPIO_BASE);
+	
+	//Initializing PA0 and PA1 to be UART pins
+	
+	//enbling pins as digital pins
+	gpio_config_digital_enable(GPIOA_BASE, PA0);
+	gpio_config_digital_enable(GPIOA_BASE, PA1);
+
+	//configuring the pins as alternate functions
+	if(!gpio_config_alternate_function(GPIOA_BASE, PA0)){
+		return false;
+	}
+	if(!gpio_config_alternate_function(GPIOA_BASE, PA1)){
+		return false;
+	}
+	//Setting PA0 to be the recieve line of UART0
+	if(!gpio_config_port_control(GPIOA_BASE, PA0, GPIO_PCTL_PA0_U0RX)){
+		return false;
+	}
+	//Setting PA1 to be the transmit line of UART0
+	if(!gpio_config_port_control(GPIOA_BASE, PA1, GPIO_PCTL_PA1_U0TX)){
+		return false;
+	}
+	
   Rx_Interrupts_Enabled = enable_rx_irq;
   Tx_Interrupts_Enabled = enable_tx_irq;
   
@@ -54,7 +76,7 @@ bool init_serial_debug(bool enable_rx_irq, bool enable_tx_irq)
  ****************************************************************************/
 int serial_debug_rx(PC_Buffer *rx_buffer, bool block)
 {
-   int c;
+   int c;	
 
    while (pc_buffer_empty(rx_buffer))
    {
@@ -62,11 +84,14 @@ int serial_debug_rx(PC_Buffer *rx_buffer, bool block)
          return -1;
    }
 
-   // ADD CODE
    // Remove data from the circular buffer.  Make sure this is an
    // atomic operation.  Disable ALL interrupts when modifying the circular 
    // buffer.  See main.c to determine how to enable/disable interrupts.
 
+	 DisableInterrupts();	//Disabling the interrupts and beginning buffer dequeue
+	 pc_buffer_remove(rx_buffer, (char *) &c);
+	 EnableInterrupts();	//Buffer remove data done, re-enabling the interrupts back
+	 
    return c;
 }
 
@@ -80,20 +105,18 @@ void serial_debug_tx(uint32_t uart_base, PC_Buffer *tx_buffer, int data)
   bool  tx_buffer_empty;
   bool  fifo_full;
   
-  // ADD/MODIFY CODE
-  
   // Determine if the hw fifo is full
-  fifo_full = false; /*MODIFY*/
+  fifo_full = uart -> FR & UART_FR_TXFF; 
   
   // Determine if the pc_buffer is empty
-  tx_buffer_empty = false; /*MODIFY*/
+  tx_buffer_empty = pc_buffer_empty(tx_buffer); 
   
   // If there is space in the hardwere FIFO, and the circular
   // buffer is empty, send the data to the FIFO.
-  if( false  /*MODIFY*/ )
+  if( tx_buffer_empty & (!fifo_full) )
   {
-    // ADD CODE
     // write data to HW FIFO
+		uart -> DR = data;
   }
   else
   {
@@ -102,23 +125,23 @@ void serial_debug_tx(uint32_t uart_base, PC_Buffer *tx_buffer, int data)
     do
     {
         // determine if the tx circular buffer is full
-        tx_buffer_full = false; /*MODIFY*/
+        tx_buffer_full = pc_buffer_full(tx_buffer);
     } while(tx_buffer_full);
 
-    // ADD CODE
     // Add the character to the circular buffer.   Make sure this is an
     // atomic operation.  Disable ALL interrupts when modifying the circular 
     // buffer. See main.c to determine how to enable/disable interrupts.
-
+		DisableInterrupts();
+		pc_buffer_add(tx_buffer, data);
+		EnableInterrupts();
     
   }
   
   // ADD CODE
   // If you're in this function, you want to send data
   // so enable TX interrupts in the UART IM register even if they 
-  // are already enabled.
-
-
+  // are already enabled.  
+	uart -> IM |= UART_IM_TXIM;
   return;
 }
 
@@ -195,14 +218,18 @@ __INLINE static void UART_Rx_Flow(uint32_t uart_base, PC_Buffer *rx_buffer)
 {
   UART0_Type *uart = (UART0_Type *)(uart_base);
   
-  // ADD CODE  
-  
   // Remove entries from the RX FIFO and place them in the circular buffer.  Return
   // once the RX FIFO is empty.
-
+	while(!(uart -> FR & UART_FR_RXFE)){
+		//add in the buffer only if it is not full
+		if(! pc_buffer_full(rx_buffer)){
+		pc_buffer_add(rx_buffer, uart -> DR);
+		}
+	}
   // Clear the RX interrupts so it can trigger again when the hardware 
   // FIFO becomes full
-  
+  uart -> ICR |= UART_ICR_RXIC | UART_ICR_RTIC;
+	
 }
 
 //*****************************************************************************
@@ -214,23 +241,34 @@ __INLINE static void UART_Tx_Flow(uint32_t uart_base, PC_Buffer *tx_buffer)
     char c;
     bool tx_buffer_empty;
   
-   // ADD CODE   
    // Check to see if we have any data in the circular buffer
-    tx_buffer_empty = false; /*modify*/
+    tx_buffer_empty = pc_buffer_empty(tx_buffer);
   
     if( !tx_buffer_empty)
     {
         // Move data from the circular queue to the hardware FIFO
         // until the hardware FIFO is full OR the circular buffer
         // becomes empty.
-    }
+			do{
+					pc_buffer_remove(tx_buffer, (char *) &c);
+					uart -> DR = c;
+					tx_buffer_empty = pc_buffer_empty(tx_buffer);
+				
+				if( (uart -> FR & UART_FR_TXFF) ){
+					uart -> ICR = UART_ICR_TXIC;
+					return;
+				}
+		}while(!tx_buffer_empty);
+	}
     else
     {
-        // Disable the TX interrupts.
+      // Disable the TX interrupts.
+			uart -> IM &= ~UART_IM_TXIM;
     }
     
     // Clear the TX interrupt so it can trigger again when the hardware
     // FIFO is empty
+		uart -> ICR |= UART_ICR_TXIC;
 
 }
 
@@ -241,18 +279,24 @@ void UART0_Handler(void)
 {
     uint32_t  status;
     uint32_t  rx_mask   = 0 ;
-
-    // ADD CODE  
+		uint32_t  tx_mask 	= 0;
+	
     // Read the interrupt status of the UART
-    status = 0; /*modify*/
+    status = UART0 -> MIS;
 
     // set rx_mask to detect both Rx related interrupts.
-    rx_mask = 0; /*modify*/
-  
+    rx_mask = UART_MIS_RXMIS | UART_MIS_RTMIS; 	//MIGHT BE WRONG IDK /*modify*/
+		
+		//set tx_mask to detect Tx related interrupts
+		tx_mask = UART_MIS_TXMIS;
+	
     if ( status & rx_mask)
     {
        UART_Rx_Flow(UART0_BASE, &UART0_Rx_Buffer);
     }
+		else if (status & tx_mask){
+			 UART_Tx_Flow(UART0_BASE, &UART0_Tx_Buffer);
+		}
     
     return;
 }

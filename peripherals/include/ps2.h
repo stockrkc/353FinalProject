@@ -55,9 +55,15 @@
 // Set the analog channel for each direction.  Each analog channel is associated with a
 // single GPIO pin.  Make sure to see table 13-1 to see how the GPIO pin maps to an 
 // analog channel.  Specifically, look at the column Pin Name.
-#define   PS2_X_ADC_CHANNEL  0
-#define   PS2_Y_ADC_CHANNEL  1
+#define   PS2_X_ADC_CHANNEL  1
+#define   PS2_Y_ADC_CHANNEL  0
 
+#define PS2_ADC_LOW_THRESHOLD		    0x0400
+#define PS2_ADC_HIGH_THRESHOLD	    0x0C00
+
+#define ADC_LOW_THRESHOLD		0x0600
+#define ADC_MID_THRESHOLD	  0x0800
+#define ADC_HIGH_THRESHOLD	0x0A00
 /*******************************************************************************
 * Function Name: ps2_initialize
 ********************************************************************************

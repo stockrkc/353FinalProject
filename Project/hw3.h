@@ -29,6 +29,26 @@ typedef enum{
   PS2_DIR_INIT,
 } PS2_DIR_t;
 
+extern volatile PS2_DIR_t dir;
+
+bool hit_wall(
+    volatile PS2_DIR_t direction,
+    volatile uint16_t x_coord, 
+    volatile uint16_t y_coord, 
+    uint8_t image_height, 
+    uint8_t image_width
+);
+		
+//int hit_wall_helper(volatile int X_SPEED,
+//		volatile int Y_SPEED, //direction of object
+//    volatile uint16_t x_coord, //x coord of object
+//    volatile uint16_t y_coord, 
+//    uint16_t image_height, 
+//    uint16_t image_width, int count
+//	);
+
+
+
 
 //*****************************************************************************
 // Determines if any part of the image would be off the screen if the image
@@ -62,7 +82,7 @@ void move_image(
 // overlaps are portions of the images where the pixels do not display on the
 // screen.
 //*****************************************************************************
-bool check_game_over(
+bool check_collision(
         volatile uint16_t ship_x_coord, 
         volatile uint16_t ship_y_coord, 
         uint8_t ship_height, 
@@ -73,14 +93,13 @@ bool check_game_over(
         uint8_t invader_width
 );
 
-//*****************************************************************************
-// Initializes all of the peripherls used in HW3
-//*****************************************************************************
-void init_hardware(void);
+void lcd_draw_coins();		
+//void lcd_draw_map();
+
         
         //*****************************************************************************
 // Main application for HW3
 //*****************************************************************************
-void hw3_main(void);
+int hw3_main(void);
 
 #endif    

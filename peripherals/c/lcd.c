@@ -407,3 +407,50 @@ void lcd_config_screen(void)
   LCD_RDX=0xFF;  
 
 }
+
+/*******************************************************************************
+* Function Name: lcd_draw_rectangle
+********************************************************************************
+* Summary: Draws a rectangle centered at x_center, y_center.
+* Returns:
+*  Nothing
+*******************************************************************************/
+void lcd_draw_rectangle_centered
+(
+  uint16_t x_center, 
+  uint16_t x_len, 
+  uint16_t y_center, 
+  uint16_t y_len,  
+  uint16_t fg_color
+)
+{
+  uint16_t x0;
+  uint16_t x1;
+  uint16_t y0;
+  uint16_t y1;
+  uint16_t i,j;
+ 
+  x0 = x_center - (x_len/2);
+  x1 = x_center + (x_len/2);
+  if( (x_len & 0x01) == 0x00)
+  {
+    x1--;
+  }
+  
+  y0 = y_center  - (y_len/2);
+  y1 = y_center  + (y_len/2) ;
+  if( (y_len & 0x01) == 0x00)
+  {
+    y1--;
+  }
+  
+  lcd_set_pos(x0,x1, y0, y1);
+  
+  for (i=0;i< y_len ;i++)
+  {
+    for(j= 0; j < x_len; j++)
+    {
+      lcd_write_data_u16(fg_color);
+    }
+  }
+}

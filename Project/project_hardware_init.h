@@ -24,6 +24,8 @@
 
 #include "main.h"
 
+void project_hardware_init(void);
+
 
 
 #endif

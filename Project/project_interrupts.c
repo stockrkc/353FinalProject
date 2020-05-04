@@ -22,11 +22,17 @@
 
 #include "main.h"
 
+#define NUM_LEDS 0x8
+
+
 static volatile uint16_t PS2_X_DATA = 0;
 static volatile uint16_t PS2_Y_DATA = 0;
 static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 static volatile uint16_t move_count = 25;
 static volatile PS2_DIR_t ghost_dir = PS2_DIR_UP;
+volatile bool AlertTimer;
+volatile int blinkLED;
+
 
 //*****************************************************************************
 // Returns the most current direction that was pressed.
@@ -56,22 +62,39 @@ PS2_DIR_t ps2_get_direction(void)
 	else {
 		return PS2_DIR_CENTER;
 	}
-  
 }
+  
 
 //*****************************************************************************
 // TIMER2 ISR is used to determine when to move the Invader
 //*****************************************************************************
 void TIMER2A_Handler(void)
 {		
-	//makes sure the joystick isn't in the center (not moving the invader)
-	if(PS2_DIR != PS2_DIR_CENTER) {
+	static PS2_DIR_t lastdir = PS2_DIR_RIGHT;
+	
+	
+		if(PS2_DIR != PS2_DIR_CENTER) {
 		//checks if contacted edge
-		bool contact = contact_edge(PS2_DIR, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanHeightPixels,  pacmanWidthPixels);
+		bool contact = contact_edge(PS2_DIR, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanupHeightPixels,  pacmanupWidthPixels);
+		//bool wall = hit_wall(PS2_DIR, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanupHeightPixels,  pacmanupWidthPixels);
+			
+		lastdir = PS2_DIR;
+		dir = lastdir;
 		if(!contact){
-			move_image(PS2_DIR, &PACMAN_X_COORD, &PACMAN_Y_COORD, pacmanHeightPixels,  pacmanWidthPixels); 
+			move_image(PS2_DIR, &PACMAN_X_COORD, &PACMAN_Y_COORD, pacmanupHeightPixels,  pacmanupWidthPixels); 
 		}
+		
+	} else {
+		bool contact = contact_edge(lastdir, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanupHeightPixels,  pacmanupWidthPixels);
+	  //bool wall = hit_wall(lastdir, PACMAN_X_COORD, PACMAN_Y_COORD,  pacmanupHeightPixels,  pacmanupWidthPixels);
+
+		if(!contact){
+			move_image(lastdir, &PACMAN_X_COORD, &PACMAN_Y_COORD, pacmanupHeightPixels,  pacmanupWidthPixels);
+		}
+		
+		
 	}
+	
 	
 	ALERT_PACMAN = true;
 
@@ -83,8 +106,9 @@ void TIMER2A_Handler(void)
 // TIMER3 ISR is used to determine when to move the spaceship
 //*****************************************************************************
 void TIMER3A_Handler(void)
-{	
-		//if the move count is greater than 0 the ship has pixels left to move
+
+{
+			//if the move count is greater than 0 the ship has pixels left to move
 		if(move_count > 0){
 			//decrement the move count so the next time it is called the ship will move one more
 			move_count = move_count - 1;
@@ -106,7 +130,7 @@ void TIMER3A_Handler(void)
 		
 		// Clear the interrupt
 		TIMER3->ICR |= TIMER_ICR_TATOCINT;
-	
+
 }
 
 
@@ -136,3 +160,22 @@ void ADC0SS2_Handler(void)
   // Clear the interrupt
   ADC0->ISC |= ADC_ISC_IN2;
 }
+
+void TIMER1A_Handler(void)
+{
+
+			if(AlertTimer){
+				if(blinkLED == 0) 
+                    {
+                        lp_io_set_pin(BLUE_BIT);
+                        blinkLED = 0;
+                    }
+				else if(blinkLED == 1) {
+          lp_io_clear_pin(BLUE_BIT);
+          blinkLED = 1;
+                    }
+									}
+
+    TIMER1 -> ICR = TIMER_ICR_TATOCINT;
+}
+				

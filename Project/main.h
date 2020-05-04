@@ -34,12 +34,21 @@
 #include "ps2.h"
 #include "launchpad_io.h"
 #include "images.h"
+#include "ft6x06.h"
+#include "ioexpander.h"
+#include "serial_debug.h"
+#include "eeprom.h"
+
 
 #include "project_interrupts.h"
 #include "project_hardware_init.h"
 
 #include "hw3.h"
 #include "hw3_staff.h"
+
+
+
+
 
 
 #endif

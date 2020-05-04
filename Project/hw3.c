@@ -1,9 +1,18 @@
 #include "hw3.h"
+#include "main.h"
 
-volatile uint16_t PACMAN_X_COORD = 120;
-volatile uint16_t PACMAN_Y_COORD = 160;
-volatile uint16_t GHOST_X_COORD = 20; 
-volatile uint16_t GHOST_Y_COORD = 40; 
+volatile uint16_t PACMAN_X_COORD = 10;
+volatile uint16_t PACMAN_Y_COORD = 10;
+volatile uint16_t GHOST_X_COORD = 120; 
+volatile uint16_t GHOST_Y_COORD = 300;
+volatile 	int livesRemaining;
+
+volatile uint16_t coinx[9] = {20, 220, 220, 20, 20, 220, 120, 120, 120};
+volatile uint16_t coiny[9] = {20, 300, 20, 300, 160, 160, 20, 300, 160};
+static bool coinvis[9] = {true, true, true, true, true, true, true, true, true};
+
+
+volatile PS2_DIR_t dir = PS2_DIR_RIGHT;
 volatile bool ALERT_PACMAN = true;
 volatile bool ALERT_GHOST = true;
 char STUDENT_NAME[] = "Allison McKinney, Jonathan Luong, Charles Stock";
@@ -27,6 +36,7 @@ bool contact_edge(
     uint8_t image_height, 
     uint8_t image_width
 )
+		
 {
 	switch(direction) 
 		{
@@ -39,7 +49,7 @@ bool contact_edge(
 			}
 		  case PS2_DIR_RIGHT:
 			{
-				if(x_coord + (.5 * image_width) > 239) { //checks to see if right part of picture touches right screen boundary
+				if(x_coord + (.5 * image_width) > 239) {					//checks to see if right part of picture touches right screen boundary
 					return true;
 				}
 				break;
@@ -69,11 +79,64 @@ bool contact_edge(
 				break;
 			}
 			
+			
+			
 			return false;
-		
 		
 		}
 }
+
+void lcd_draw_coins(){
+		
+			if(coinvis[0]) {
+				lcd_draw_image(20, coinWidthPixels, 20, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			} else{
+				lcd_draw_rectangle_centered(20, 8, 20, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[1]) {
+			lcd_draw_image(220, coinWidthPixels, 300, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}
+				else{
+					lcd_draw_rectangle_centered(220, 8, 300, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[2]) {
+			lcd_draw_image(220, coinWidthPixels, 20, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			} else{
+				lcd_draw_rectangle_centered(220, 8, 20, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[3]) {			
+			lcd_draw_image(20, coinWidthPixels, 300, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(20, 8, 300, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[4]) {			
+			lcd_draw_image(20, coinWidthPixels, 160, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(20, 8, 160, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[5]) {			
+			lcd_draw_image(220, coinWidthPixels, 160, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(220, 8, 160, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[6]) {
+			lcd_draw_image(120, coinWidthPixels, 20, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(120, 8, 20, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[7]) {
+			lcd_draw_image(120, coinWidthPixels, 300, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(120, 8, 300, 8, LCD_COLOR_BLACK);
+			}
+			if(coinvis[8]) {
+				
+			lcd_draw_image(120, coinWidthPixels, 160, coinHeightPixels, coinBitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+			}else{
+				lcd_draw_rectangle_centered(120, 8, 160, 8, LCD_COLOR_BLACK);
+			}
+}	
+
 
 //*****************************************************************************
 // Moves the image by one pixel in the provided direction.  The second and 
@@ -95,6 +158,7 @@ void move_image(
 				*x_coord = *x_coord - 1;
 				break;
 			}
+			
 		  case PS2_DIR_RIGHT:
 			{//in the case of PS2 in right position move image right by one pixel
 				*x_coord = *x_coord + 1;
@@ -123,6 +187,8 @@ void move_image(
    
 }
 
+
+
 //*****************************************************************************
 // Determines is any portion of the two images are overlapping.  An image is
 // considered to be overlapping if the two rectangles determined by the image
@@ -130,7 +196,7 @@ void move_image(
 // overlaps are portions of the images where the pixels do not display on the
 // screen.
 //*****************************************************************************
-bool check_game_over(
+bool check_collision(
         volatile uint16_t ghost_x_coord, 
         volatile uint16_t ghost_y_coord, 
         uint8_t ghost_height, 
@@ -142,6 +208,7 @@ bool check_game_over(
 )
 { bool x_intersect; // boolean value to determine if an axis in the x direction intersect eachother
 	bool y_intersect; //boolean value to determine if an axis in the y direction intersect eachother
+
 	
 	// equation test if at any point the x axis on the right side of the ship is within the x range of the picture, then checks for the left side 
 	if(((ghost_x_coord+ghost_width/2)<=(pacman_x_coord+pacman_width/2)&&(ghost_x_coord+ghost_width/2)>=(pacman_x_coord-pacman_width/2))||((ghost_x_coord-ghost_width/2)>=(pacman_x_coord-pacman_width/2)&&(ghost_x_coord-ghost_width/2)<=(pacman_x_coord+pacman_width/2))){
@@ -155,51 +222,93 @@ bool check_game_over(
 	
 	//both conidition must be met for intersection to be true for the two objects 
 	if((x_intersect==true)&&(y_intersect==true)){
+		lcd_draw_rectangle_centered(PACMAN_X_COORD, 19, PACMAN_Y_COORD, 19, LCD_COLOR_BLACK);
+		PACMAN_X_COORD = 120;
+    PACMAN_Y_COORD = 160;
+		livesRemaining--; 
 		return true;
 	}
 	
 	return false; // return false if not met
 }
 
-//*****************************************************************************
-// Initializes all of the peripherls used in HW3
-//*****************************************************************************
-void init_hardware(void)
-{
-  lcd_config_gpio();
-  lcd_config_screen();
-  lcd_clear_screen(LCD_COLOR_BLACK);
-  ps2_initialize();
-  
-  // Update the Space Shipt 60 times per second.
-  gp_timer_config_32(TIMER2_BASE,TIMER_TAMR_TAMR_PERIOD, 1000000, false, true);
-  gp_timer_config_32(TIMER3_BASE,TIMER_TAMR_TAMR_PERIOD, 500000, false, true);
-  gp_timer_config_32(TIMER4_BASE,TIMER_TAMR_TAMR_PERIOD, 50000, false, true);
+bool coin_collision(
+        volatile uint16_t coin_x_coord, 
+        volatile uint16_t coin_y_coord, 
+        uint8_t coin_height, 
+        uint8_t coin_width,
+        volatile uint16_t pacman_x_coord, 
+        volatile uint16_t pacman_y_coord, 
+        uint8_t pacman_height, 
+        uint8_t pacman_width
+)
+{ bool x_intersect; // boolean value to determine if an axis in the x direction intersect eachother
+	bool y_intersect; //boolean value to determine if an axis in the y direction intersect eachother
+
+	
+	// equation test if at any point the x axis on the right side of the ship is within the x range of the picture, then checks for the left side 
+	if(((coin_x_coord+coin_width/2)<=(pacman_x_coord+pacman_width/2)&&(coin_x_coord+coin_width/2)>=(pacman_x_coord-pacman_width/2))||((coin_x_coord-coin_width/2)>=(pacman_x_coord-pacman_width/2)&&(coin_x_coord-coin_width/2)<=(pacman_x_coord+pacman_width/2))){
+		x_intersect =true;	
+	}
+	
+	// equation test if at any point the y axis on the top side of the ship is within the y range of the picture, then checks for the bottom side 
+	if(((coin_y_coord+coin_height/2)<=(pacman_y_coord+pacman_height/2)&&(coin_y_coord+coin_height/2)>=(pacman_y_coord-pacman_height/2))||((coin_y_coord-coin_height/2)>=(pacman_y_coord-pacman_height/2)&&(coin_y_coord-coin_height/2)<=(pacman_y_coord+pacman_height/2))){
+		y_intersect =true;	
+	}
+	
+	//both conidition must be met for intersection to be true for the two objects 
+	if((x_intersect==true)&&(y_intersect==true)){
+		return true;
+		
+	}
+	
+	return false; // return false if not met
 }
+
+void pacman_coin(){
+	
+	
+		int i=0;
+	
+		for (i=0;i<9;i++){
+			if (coin_collision(coinx[i], coiny[i], coinHeightPixels, coinWidthPixels,PACMAN_X_COORD, PACMAN_Y_COORD, pacmanupHeightPixels, pacmanupWidthPixels)){
+				coinvis[i] = false;
+			}	
+		}		
+	
+}
+
+
+bool check_win(){
+	
+	
+	
+	
+}
+
+
 
 //*****************************************************************************
 // Main application for HW3
 //*****************************************************************************
-void hw3_main(void)
+int hw3_main(void)
 { 
+	char str[20];
+	bool check_win = false;
+	int i;
+	livesRemaining = 3;
+	io_expander_write_reg(MCP23017_GPIOA_R, 0x07);
+	lcd_clear_screen(LCD_COLOR_BLACK);
 	
-//	lcd_draw_image(
-//													120,                       // X Center Point
-//                          map1WidthPixels,   // Image Horizontal Width
-//                          160,                       // Y Center Point
-//                          map1HeightPixels,  // Image Vertical Height
-//                          map1Bitmaps,       // Image
-//                          LCD_COLOR_BLUE,           // Foreground Color
-//                          LCD_COLOR_BLACK          // Background Color
-//                        );	
+	lcd_draw_coins();
+         while(livesRemaining > 0)
+				 {	
+					 lcd_draw_coins();
 
-		
-         while(1)
-				 {
           if(ALERT_GHOST)
           {
             ALERT_GHOST = false;
-            
+						
             lcd_draw_image(
                           GHOST_X_COORD,                       // X Center Point
                           ghostpcWidthPixels,   // Image Horizontal Width
@@ -209,24 +318,97 @@ void hw3_main(void)
                           LCD_COLOR_CYAN,           // Foreground Color
                           LCD_COLOR_BLACK          // Background Color
                         );
-//              
-          
-//          if(ALERT_PACMAN)
-//          {
-//            ALERT_PACMAN = false;
-//            
-//            lcd_draw_image(
-//                          PACMAN_X_COORD,          // X Center Point
-//                          pacmanWidthPixels,       // Image Horizontal Width
-//                          PACMAN_Y_COORD,          // Y Center Point
-//                          pacmanHeightPixels,      // Image Vertical Height
-//                          pacmanBitmaps,           // Image
-//                          LCD_COLOR_YELLOW,            // Foreground Color
-//                          LCD_COLOR_BLACK           // Background Color
-//                        );
-//         
-//          }
-          
+							
+
+						 check_collision(
+                                            PACMAN_X_COORD,
+                                            PACMAN_Y_COORD,
+                                            pacmanupHeightPixels,
+                                            pacmanupWidthPixels,
+                                            GHOST_X_COORD,
+                                            GHOST_Y_COORD,
+                                            ghostpcHeightPixels,
+                                            ghostpcWidthPixels
+                                        );
+																											
+						
+
+					if(livesRemaining == 2){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x03);
+					}
+					if(livesRemaining == 1){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x01);
+					}
+					if(livesRemaining == 0){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x00);
+					}
 				}
-			}
-			}					
+          
+          if(ALERT_PACMAN)
+          {
+						
+						uint8_t pacman[57];
+						uint8_t i;
+						
+            ALERT_PACMAN = false;
+            
+						//determines what way pacman should be facing
+						for (i=0;i<=57;i++){
+							if(dir == PS2_DIR_LEFT) { 
+								pacman[i]=pacmanleftBitmaps[i];
+							}
+							if(dir == PS2_DIR_UP) { 
+								pacman[i]=pacmanupBitmaps[i];
+							}
+							if(dir == PS2_DIR_RIGHT) { 
+								pacman[i]=pacmanrightBitmaps[i];
+							}
+							if(dir == PS2_DIR_DOWN) { 
+								pacman[i]=pacmandownBitmaps[i];
+							}
+						}
+
+
+						
+            lcd_draw_image(
+                          PACMAN_X_COORD,          // X Center Point
+                          pacmanupWidthPixels,       // Image Horizontal Width
+                          PACMAN_Y_COORD,          // Y Center Point
+                          pacmanupHeightPixels,      // Image Vertical Height
+                          pacman,           			// Image
+                          LCD_COLOR_YELLOW,            // Foreground Color
+                          LCD_COLOR_BLACK           // Background Color
+                        );
+						
+											 check_collision(
+                                            PACMAN_X_COORD,
+                                            PACMAN_Y_COORD,
+                                            pacmanupHeightPixels,
+                                            pacmanupWidthPixels,
+                                            GHOST_X_COORD,
+                                            GHOST_Y_COORD,
+                                            ghostpcHeightPixels,
+                                            ghostpcWidthPixels
+                                        );
+																				
+					
+																				
+					if(livesRemaining == 2){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x03);
+					}
+					if(livesRemaining == 1){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x01);
+					}
+					if(livesRemaining == 0){
+						io_expander_write_reg(MCP23017_GPIOA_R, 0x00);
+					}													
+					
+         
+          }
+         	
+					pacman_coin();
+					lcd_draw_coins(); 
+				
+				 }
+
+		}		
